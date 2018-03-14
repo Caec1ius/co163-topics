@@ -11,10 +11,12 @@
   <link rel="stylesheet" href="css/custom.min.css">
 </head>
 <body>
-<div class="navbar navbar-expand-lg fixed-top navbar-light bg-light">
+<div class="navbar navbar-expand-lg fixed-top navbar-dark bg-primary">
   <div class="container">
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"></button>
-    <div class="collapse navbar-collapse" id="navbarResponsive">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation" style="">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarColor01">
       <ul class="navbar-nav">
         <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
         <li class="nav-item dropdown">
@@ -22,8 +24,8 @@
           <div class="dropdown-menu">
             <a class="dropdown-item" href="background-overview.html">Overview of Computer Architecture</a>
             <a class="dropdown-item" href="background-memory-management.html">Memory Management and Attacks</a>
-            <a class="dropdown-item" href="background-cpu-speculative-execution.html">CPU Management and Attacks</a>
-            <a class="dropdown-item" href="background-flush-reload.html">Cache Side Channel Attacks (Flush + Reload)</a></div>
+            <a class="dropdown-item" href="background-cpu-speculative-execution.html">CPU Management</a>
+            <a class="dropdown-item" href="background-flush-reload.html">CPU Side Channel Attacks</a></div>
         </li>
         <li class="nav-item"><a class="nav-link" href="meltdown-attack.html">Meltdown</a></li>
         <li class="nav-item active"><a class="nav-link" href="spectre-attack.html">Spectre</a></li>
@@ -32,23 +34,87 @@
   </div>
 </div>
 
-
-<div class="container">
-  <div class="row">
-    <div class="col-sm-12">
-      <div class="d-flex justify-content-between">
-        <p>
-        </p>
-        <p>
-          <small><a href="spectre-mitigations.html">Mitigations &raquo;</a></small>
-        </p>
-      </div>
+<div class="jumbo jumbo-solid">
+  <div class="container">
+    <div class="offset-md-1">
+      <h1 class="jumbo-header">Spectre</h1>
     </div>
   </div>
+</div>
+
+<div class="container">
 
   <div class="row">
-    <div class="col-md-12">
-
+    <div class="offset-md-1 col-md-10">
+        <p>
+          The Spectre Attacks are a class of computer attacks which leverage speculative
+          execution to execute programs in incorrect ways, rendering measurable side effects.
+          These incorrect processes were assumed to have no security implications due to the
+          processor rollback methods, however recent research suggests otherwise. Spectre attacks
+          involve inducing a victim to speculatively execute operations that would not occur
+          during correct execution of the program and which may leak the victim’s private data
+          via a microarchitectural covert side channel attack to the adversary – predominantly
+          using Flush and Reload techniques. The problem with reverting back to a checkpoint
+          after erroneous speculative execution is that changes to certain parts of the CPU -
+          such as cache contents -  may subsist the state reversion.
+        </p>
+        <br/>
+        <p>
+          An example of exploitable code is as follows:
+        </p>
+        <pre><code>
+          <i>
+    if (x < array1_size)
+          y = array2[array1[x] * 256];
+          </i>
+        </code></pre>
+      <br/>
+      <p>
+        In the above example, the attacker-controlled variable, x, is checked to be within a legal
+        range to ensure the access to array1 is valid. If the value of x is valid then the succeeding
+        statement may run, otherwise the program shouldn’t be allowed to access that section of
+        array2.
+      </p>
+      <br/>
+      <figure class="figure text-center d-block">
+          <img src="images/privatedata.png"/>
+        <figcaption class="figure-caption"><i>Figure 1</i>: Shows private and accessible sections of memory</figcaption>
+      </figure>
+      <br/>
+      <p>
+        In order to exploit this, the attacker will first train the Branch Predictor to take the
+        branch by invoking the code with valid inputs multiple times so that it will begin to
+        speculatively execute the branch; this will cause array1_size to be uncached and array1
+        to become cached. The attacker will then invoke the code with an invalid value of x and
+        reading array1_size will result in a cache miss, causing a substantial delay until the
+        value is available from main memory. During this delay, the processor will begin to
+        speculatively execute the branch and read the value of array1[x] resulting in a cache hit,
+        quickly returning the value of a secret byte, k. The processor will request a read from
+        array2[k * 256] which will result in another cache miss. The value of array1_size then
+        returns from memory whilst the read from array2 is pending. The processor will realise that
+        the speculative execution was erroneous and the program is reverted back to the checkpoint,
+        however the change in cache state is not reverted.
+      </p>
+      <p>
+        In order to recover the secret byte, k, from cache, the attacker may launch a side channel
+        attack to detect a change in the cache state. Alternatively the attacker may request a read
+        from array2[k’ * 256] with a range of values of k’; the value of k’ = k will result in a
+        cache hit, meaning the attacker can observe the short return time using a timer and obtain
+        k. The value of array2[k * 256] can then be read to gain access to the victim’s private
+        memory.
+      </p>
+      <br/>
+      <figure class="figure text-center d-block">
+        <img src="images/cachehit.png"/>
+        <figcaption class="figure-caption"><i>Figure 2</i>: Shows attacker testing different values of k'</figcaption>
+      </figure>
+      <br/>
+      <p>
+        Aside from general exploitation within a program, this data leakage can also be used
+        directly; for example, a malicious JavaScript in a browser could steal passwords stored in
+        the browser from another tab. The potential impact of this exploitation could be drastic if
+        employed by ‘real-world’ attackers.
+      </p>
     </div>
   </div>
 
@@ -64,7 +130,7 @@
 
   <hr>
   <row>
-    <div class="col-md-12">
+    <div class="col-md-12 references">
       <p>
 
       </p>

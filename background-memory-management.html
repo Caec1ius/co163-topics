@@ -11,10 +11,12 @@
   <link rel="stylesheet" href="css/custom.min.css">
 </head>
 <body>
-<div class="navbar navbar-expand-lg fixed-top navbar-light bg-light">
+<div class="navbar navbar-expand-lg fixed-top navbar-dark bg-primary">
   <div class="container">
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"></button>
-    <div class="collapse navbar-collapse" id="navbarResponsive">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation" style="">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarColor01">
       <ul class="navbar-nav">
         <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
         <li class="nav-item dropdown active">
@@ -22,8 +24,8 @@
           <div class="dropdown-menu">
             <a class="dropdown-item" href="background-overview.html">Overview of Computer Architecture</a>
             <a class="dropdown-item" href="background-memory-management.html">Memory Management and Attacks</a>
-            <a class="dropdown-item" href="background-cpu-speculative-execution.html">CPU Management and Attacks</a>
-            <a class="dropdown-item" href="background-flush-reload.html">Cache Side Channel Attacks (Flush + Reload)</a>
+            <a class="dropdown-item" href="background-cpu-speculative-execution.html">CPU Management</a>
+            <a class="dropdown-item" href="background-flush-reload.html">CPU Side Channel Attacks</a>
           </div>
         </li>
         <li class="nav-item"><a class="nav-link" href="meltdown-attack.html">Meltdown</a></li>
@@ -33,24 +35,18 @@
   </div>
 </div>
 
-
-<div class="container">
-  <div class="row">
-    <div class="col-sm-12">
-      <div class="d-flex justify-content-between">
-        <p>
-          <small><a href="background-overview.html">&laquo; Introduction to Architecture</a></small>
-        </p>
-        <p>
-          <small><a href="background-memory-attacks.html">Memory-corruption Attacks and ASLR &raquo;</a></small>
-        </p>
-      </div>
+<div class="jumbo" style="background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('images/computer-memory-chips.jpg');">
+  <div class="container">
+    <div class="offset-md-1">
+      <h1 class="jumbo-header">Memory Management and Attacks</h1>
     </div>
   </div>
+</div>
+
+<div class="container">
 
   <div class="row">
-    <div class="col-md-12">
-      <h1>Memory Management and ASLR</h1>
+    <div class="offset-md-1 col-md-10">
       <p>
         Both the Meltdown and Spectre attacks allow attackers to leak information from memory. Meltdown in particular allows an attacker to read a machine's entire kernel memory, bypassing techniques
         aimed at preventing processes from accessing memory locations which should not be able to be accessed<sup><a href="#1">[1]</a></sup>. This section explains memory management in more detail.
@@ -64,8 +60,8 @@
       </p>
       <figure class="figure text-center d-block">
         <video style="width: 45%;" autoplay loop controls>
-          <source src="images/virtualmemoryanimated.mp4" type="video/mp4" />
-          <img src="images/virtualmemoryanimated.gif" />
+          <source src="images/virtualmemoryanimated.mp4" type="video/mp4"/>
+          <img src="images/virtualmemoryanimated.gif"/>
         </video>
         <figcaption class="figure-caption">Fig. 1: Model of page-frame mapping</figcaption>
       </figure>
@@ -90,8 +86,8 @@
 
       <figure class="figure text-center d-block">
         <video style="width: 50%;" autoplay loop controls>
-          <source src="images/mappinganimated.mp4" type="video/mp4" />
-          <img src="images/mappinganimated.gif" />
+          <source src="images/mappinganimated.mp4" type="video/mp4"/>
+          <img src="images/mappinganimated.gif"/>
         </video>
         <figcaption class="figure-caption">Fig. 2: Visualisation of physical memory being mapped into <br/>kernel-space of a process (blue represents a chunk of memory)</figcaption>
       </figure>
@@ -114,7 +110,7 @@
 
   <hr>
   <row>
-    <div class="col-md-12">
+    <div class="col-md-12 references">
       <p>
         <span id="1"><sup>[1]</sup></span> M. Lipp et al., 'Meltdown', <em>arXiv preprint arXiv:1801.01207</em>, 2018.<br/>
         <span id="2"><sup>[2]</sup></span> D. Kleidermacher and M. Kleidermacher, <em>Embedded Systems Security: Practical Methods for Safe and Secure Software and Systems Development</em>,
@@ -136,6 +132,7 @@
     <div class="row">
       <div class="col-lg-12">
         <p>Created by <a href="#">Dingyu Chen</a>, <a href="#">Anindita Ghosh</a>, <a href="#">Giovanni Passerello</a> and <a href="kelvin/index.html">Kelvin Zhang</a>.</p>
+        <p>Image attributions: <em>Computer Memory Chips</em> by Petr Kratochivil under CC0.</p>
       </div>
     </div>
   </footer>
